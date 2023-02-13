@@ -3,6 +3,8 @@ package com.s2daw.demo.dao;
 import com.s2daw.demo.models.Usuario;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -10,9 +12,11 @@ import java.util.List;
 @Transactional
 
 public class UsuarioDaoImp implements UsuarioDao{
- private EntityManager entityManager;
+    @PersistenceContext
+ EntityManager entityManager;
     @Override
     public List<Usuario> getUsuarios() {
-        return null;
+       String query = "FROM Usuario";
+      return entityManager.createQuery(query).getResultList();
     }
 }

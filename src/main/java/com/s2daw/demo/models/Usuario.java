@@ -1,5 +1,10 @@
 package com.s2daw.demo.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
 
     private Long id;
