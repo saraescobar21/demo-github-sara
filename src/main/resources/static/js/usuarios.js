@@ -4,6 +4,20 @@ $(document).ready(function() {
   $('#usuarios').DataTable();
 });
 
-function cargarUsuarios(){
+
+async function cargarUsuarios(){
+
+
+  const request = await fetch('usuario/{id}', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  });
+  const usuarios = await request.json();
+
+  console.log(usuarios);
+
 
 }
