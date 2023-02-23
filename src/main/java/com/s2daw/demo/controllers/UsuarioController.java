@@ -2,6 +2,7 @@ package com.s2daw.demo.controllers;
 
 import com.s2daw.demo.dao.UsuarioDao;
 import com.s2daw.demo.models.Usuario;
+import com.s2daw.demo.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioDao usuarioDao;
+    @Autowired
+    private JWTUtil jwtutil;
 
     @RequestMapping(value="api/usuarios/{id}", method = RequestMethod.GET)
     public Usuario getUsuario(@PathVariable Long id){
@@ -27,9 +30,19 @@ public class UsuarioController {
     }
 
     @RequestMapping(value="api/usuarios", method = RequestMethod.GET)
-    public List<Usuario> getUsuarios(){
+
+        //GUARDAMOS EN TOKEN LO QUE NOS VIENE EN CABECERA
+    public List<Usuario> getUsuarios(@RequestHeader(value = "Authorization")String token){
+
+        if(!validarToken(token)){return null;}
         return usuarioDao.getUsuarios();
 
+    }
+
+    private boolean validarToken(String token){
+        //VERIFICAR LA SESION CORRECTA
+        String usuarioId = jwtutil.getKey(token);
+       return usuarioId != null;
     }
 
     @RequestMapping(value="api/usuarios", method = RequestMethod.POST)
@@ -53,17 +66,10 @@ public class UsuarioController {
     }
 
     @RequestMapping(value="api/usuarios/{id}", method = RequestMethod.DELETE)
-    public void eliminar(@PathVariable Long id){
+    public void eliminar(@RequestHeader(value = "Authorization")String token,
+                         @PathVariable Long id){
+        if(!validarToken(token)){return;}
         usuarioDao.eliminar(id);
     }
 
-    @RequestMapping(value="usuario12")
-    public Usuario buscar(){
-        Usuario usuario = new Usuario();
-        usuario.setNombre("Lucas");
-        usuario.setApellido("Moy");
-        usuario.setEmail("lucasmoy@hotmail.com");
-        usuario.setTelefono("632147895");
-        return usuario;
-    }
 }
