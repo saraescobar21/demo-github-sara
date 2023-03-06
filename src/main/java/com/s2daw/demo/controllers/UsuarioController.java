@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@RestController //indica que es un controlados
+
 public class UsuarioController {
     @Autowired
     private UsuarioDao usuarioDao;
     @Autowired
     private JWTUtil jwtutil;
 
+    //prueba de comentario
     @RequestMapping(value="api/usuarios/{id}", method = RequestMethod.GET)
     public Usuario getUsuario(@PathVariable Long id){
         Usuario usuario = new Usuario();
@@ -33,7 +35,6 @@ public class UsuarioController {
 
         //GUARDAMOS EN TOKEN LO QUE NOS VIENE EN CABECERA
     public List<Usuario> getUsuarios(@RequestHeader(value = "Authorization")String token){
-
         if(!validarToken(token)){return null;}
         return usuarioDao.getUsuarios();
 
@@ -48,6 +49,11 @@ public class UsuarioController {
     @RequestMapping(value="api/usuarios", method = RequestMethod.POST)
     public void registrarUsuario(@RequestBody Usuario usuario){
 
+        //LIBRERIA
+        //Argon2 es una función de hash de contraseñas que resume el estado del arte
+        // en el diseño de funciones de memoria dura
+        // y puede usarse para hash de contraseñas para almacenamiento
+        // de credenciales, derivación de claves u otras aplicaciones.
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
         String hash = argon2.hash(1, 1024, 1, usuario.getPassword());
         usuario.setPassword(hash);

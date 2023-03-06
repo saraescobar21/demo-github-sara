@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController //indica que es un controlador
 public class AuthController {
 
-    @Autowired
+    @Autowired //se almacena en memoria
     private UsuarioDao usuarioDao;
 
     //inyección de dependencias
@@ -21,6 +21,7 @@ public class AuthController {
     private JWTUtil jwtutil;
 
 
+    //El ReqMap indica a la url cuando devuelve el contenido
     @RequestMapping(value="api/login", method = RequestMethod.POST)
     public String login(@RequestBody Usuario usuario){
 

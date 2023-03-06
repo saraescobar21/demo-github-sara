@@ -4,13 +4,17 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
+@Entity //entidad que va a hacer referencia a la BBDD
 @Table(name = "usuarios")
-@ToString @EqualsAndHashCode
+@ToString @EqualsAndHashCode //Genera los métodos equals() y hashCode()
 public class Usuario {
 
 
-    @Id
+
+    @Id //para indicar que va a ser la clave primaria
+
+    //Para generar los valores de una clave primaria,
+    // es decir, que los genere JPA automáticamente
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter @Column(name = "id")
     private Long id;
